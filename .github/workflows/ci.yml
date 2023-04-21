@@ -2,7 +2,7 @@ name: CI
 on:
   pull_request:
     branches:
-      - testing
+      - main
 
 jobs: 
   build_ios:
