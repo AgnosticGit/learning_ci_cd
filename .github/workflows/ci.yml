@@ -17,6 +17,8 @@ on:
 #       - uses: subosito/flutter-action@v2
 #         with: 
 #           channel: stable
+#       - run: flutter pub get
+#       - run: flutter clean
 #       - run: flutter build ios --no-codesign
 
   build_appbundle:
@@ -31,5 +33,7 @@ on:
       - uses: subosito/flutter-action@v2
         with: 
           channel: stable
+      - run: flutter pub get
+      # - run: flutter clean
       - run: flutter build appbundle
       
