@@ -10,7 +10,7 @@ jobs:
     runs-on: macos-latest
 
     steps:
-      - name: Cache Homebrew
+      - name: Get "Homebrew" cache
         id: home_brew_cache
         uses: actions/cache@v3
         with:
@@ -18,16 +18,13 @@ jobs:
           key: ${{ runner.os }}-brew-${{ hashFiles('**/Brewfile.lock.json') }}
           restore-keys: ${{ runner.os }}-brew-
 
-      - name: Display cache-hit value
-        run: | 
-          echo "Cache hit value: ${{ steps.home_brew_cache.outputs.cache-hit }}"
-
-      - name: Install Homebrew 
+      - name: Install Homebrew if not cached yet
         if: ${{ steps.home_brew_cache.outputs.cache-hit != 'true' }} 
         run: |
           /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 
-      - name: Save Homebrew cache
+      - name: Save Homebrew Cache if not cached yet
+        if: ${{ steps.home_brew_cache.outputs.cache-hit != 'true' }}
         uses: actions/cache@v3
         with:
           path: /usr/local/Homebrew
