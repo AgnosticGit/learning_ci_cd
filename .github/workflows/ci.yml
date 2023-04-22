@@ -6,13 +6,10 @@ on:
       - main
   
 jobs:
-  build_nekoton:
+  cache_nekoton:
     runs-on: ubuntu-latest
 
     steps:
-      # - name: Checkout 
-      #   uses: actions/checkout@v3
-
       - name: Checkout commit
         uses: actions/checkout@v3
         with:
