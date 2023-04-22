@@ -47,7 +47,6 @@ jobs:
       - name: which llvm
         run: |
           which llvm
-          which llvm-config
 
       - name: which llvm-cfg
         run: |
