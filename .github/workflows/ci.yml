@@ -10,11 +10,12 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # - name: Checkout commit
-      #   uses: actions/checkout@v3
-      #   with:
-      #     ref: ecc3beee7053634377f0e12667248c95cd888f24
-      #     repository: broxus/nekoton-flutter
+      - name: Checkout commit
+        uses: actions/checkout@v3
+        with:
+          path: ../nekoton-flutter
+          ref: ecc3beee7053634377f0e12667248c95cd888f24
+          repository: broxus/nekoton-flutter
 
       - name: Cache dependencies
         # uses: actions/cache@v3    
