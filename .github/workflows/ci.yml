@@ -7,39 +7,61 @@ on:
   
 jobs:
   cache_nekoton:
-    runs-on: ubuntu-latest
+    runs-on: macos-latest
 
     steps:
+      - name: Install Homebrew
+        run: |
+          /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+          
+      - name: Cache Homebrew
+        uses: actions/cache@v2
+        with:
+          path: /usr/local/Homebrew
+          key: ${{ runner.os }}-brew-${{ hashFiles('**/Brewfile.lock.json') }}
+          restore-keys: ${{ runner.os }}-brew-
+
+      - name: Install Homebrew
+        if: steps.cache.outputs.cache-hit != 'true' # Skip installation if cache hit
+        run: |
+          /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+          echo 'eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"' >> $GITHUB_ENV
+
+      - name: Install dependencies
+        run: |
+          brew bundle install --file=Path/To/Brewfile
+
+      - name: Save Homebrew cache
+        uses: actions/cache@v2
+        with:
+          path: /usr/local/Homebrew
+          key: ${{ runner.os }}-brew-${{ hashFiles('**/Brewfile.lock.json') }}
+          restore-keys: ${{ runner.os }}-brew-
+
       # - name: Checkout project
       #   uses: actions/checkout@v3
       #   with:
       #     path: learning_ci_cd
 
-      - name: Checkout nekoton-flutter
-        uses: actions/checkout@v3
-        with:
-          path: nekoton-flutter
-          ref: ecc3beee7053634377f0e12667248c95cd888f24
-          repository: broxus/nekoton-flutter
+      # - name: Checkout nekoton-flutter
+      #   uses: actions/checkout@v3
+      #   with:
+      #     path: nekoton-flutter
+      #     ref: ecc3beee7053634377f0e12667248c95cd888f24
+      #     repository: broxus/nekoton-flutter
 
-      - name: Build nekoton-flutter
-        run: |
-          /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-          (echo; echo 'eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"') >> /home/runner/.bash_profile
-          eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
-          brew install llvm@15
+      # - name: Build nekoton-flutter
+      #   run: |
+      #     /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+      #     (echo; echo 'eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"') >> /home/runner/.bash_profile
+      #     eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+      #     brew install llvm@15
 
-      - name: Cache nekoton
-        uses: actions/cache@v3    
-        with:
-          path: nekoton-flutter
-          key: ${{ runner.os }}-nekoton-flutter
-
-      - name: check epta
-        run: | 
-          pwd
-          ls -lah
-
+      # - name: Cache nekoton
+      #   uses: actions/cache@v3    
+      #   with:
+      #     path: nekoton-flutter
+      #     key: ${{ runner.os }}-nekoton-flutter
       # - name: Install dependencies
       #   run: |
       #     sudo apt-get update
