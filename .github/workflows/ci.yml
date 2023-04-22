@@ -22,9 +22,9 @@ jobs:
       - name: Cache dependencies
         uses: actions/cache@v3
         with:
-          path: |
-            ~/leraning_ci_cd/.pub-cache
-          key: ${{ runner.os }}-pub-${{ hashFiles('**/pubspec.lock') }}
+          with:
+            path: nekoton-flutter
+            key: ${{ runner.os }}-nekoton
           restore-keys: |
             ${{ runner.os }}-pub-
 
