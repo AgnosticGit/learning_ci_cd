@@ -6,11 +6,11 @@ on:
       - main
   
 jobs:
-  build:
+  build_nekoton:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repo
+      - name: Checkout commit
         uses: actions/checkout@v2
         with:
           ref: ecc3beee7053634377f0e12667248c95cd888f24
@@ -18,12 +18,12 @@ jobs:
 
       - name: Cache dependencies
         uses: actions/cache@v3
-        with:
-          path: |
-            ~/.pub-cache
-          key: ${{ runner.os }}-pub-${{ hashFiles('**/pubspec.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-pub-
+        # with:
+        #   path: |
+        #     ~/.pub-cache
+        #   key: ${{ runner.os }}-pub-${{ hashFiles('**/pubspec.lock') }}
+        #   restore-keys: |
+        #     ${{ runner.os }}-pub-
 
       # - name: Install dependencies
       #   run: |
