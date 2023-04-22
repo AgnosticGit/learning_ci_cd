@@ -11,6 +11,7 @@ jobs:
 
     steps:
       - name: Cache Homebrew
+        id: cache
         uses: actions/cache@v3
         with:
           path: /usr/local/Homebrew
