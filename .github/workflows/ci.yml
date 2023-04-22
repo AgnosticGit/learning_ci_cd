@@ -16,14 +16,14 @@ jobs:
           ref: ecc3beee7053634377f0e12667248c95cd888f24
           repository: broxus/nekoton-flutter
 
-      # - name: Cache dependencies
-      #   uses: actions/cache@v3
-      #   with:
-      #     path: |
-      #       ~/.pub-cache
-      #     key: ${{ runner.os }}-pub-${{ hashFiles('**/pubspec.lock') }}
-      #     restore-keys: |
-      #       ${{ runner.os }}-pub-
+      - name: Cache dependencies
+        uses: actions/cache@v3
+        with:
+          path: |
+            ~/.pub-cache
+          key: ${{ runner.os }}-pub-${{ hashFiles('**/pubspec.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-pub-
 
       # - name: Install dependencies
       #   run: |
