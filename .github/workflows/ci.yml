@@ -24,8 +24,6 @@ jobs:
         with:
           path: nekoton-flutter
           key: ${{ runner.os }}-nekoton
-        restore-keys: |
-          ${{ runner.os }}-pub-
 
       # - name: Install dependencies
       #   run: |
