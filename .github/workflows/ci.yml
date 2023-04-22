@@ -10,9 +10,6 @@ jobs:
         runs-on: macos-latest
 
         steps:
-        - name: Checkout code
-          uses: actions/checkout@v2
-
         - name: Cache Homebrew
           uses: actions/cache@v2
           with:
@@ -24,7 +21,6 @@ jobs:
           if: steps.cache.outputs.cache-hit != 'true' # Skip installation if cache hit
           run: |
             /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-            echo 'eval "$(/usr/local/bin/brew shellenv)"' >> $GITHUB_ENV
 
         - name: Install dependencies
           run: |
