@@ -10,7 +10,12 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout commit
+      - name: Checkout project
+        uses: actions/checkout@v3
+        with:
+          path: learning_ci_cd
+
+      - name: Checkout nekoton
         uses: actions/checkout@v3
         with:
           path: nekoton-flutter
