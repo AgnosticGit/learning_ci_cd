@@ -15,12 +15,18 @@ jobs:
         with:
           path: learning_ci_cd
 
-      - name: Checkout nekoton
+      - name: Checkout nekoton-flutter
         uses: actions/checkout@v3
         with:
           path: nekoton-flutter
           ref: ecc3beee7053634377f0e12667248c95cd888f24
           repository: broxus/nekoton-flutter
+
+      - name: Build nekoton-flutter
+        run: |
+          /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+          brew install llvm@15
+          llvm-config --version      
 
       - name: Cache nekoton
         uses: actions/cache@v3    
