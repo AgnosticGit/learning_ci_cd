@@ -10,28 +10,24 @@ jobs:
         runs-on: macos-latest
 
         steps:
-        - name: Cache Homebrew
-          uses: actions/cache@v2
-          with:
-            path: /usr/local/Homebrew
-            key: ${{ runner.os }}-brew-${{ hashFiles('**/Brewfile.lock.json') }}
-            restore-keys: ${{ runner.os }}-brew-
+          - name: Install Homebrew
+            if: steps.cache.outputs.cache-hit != 'true' # Skip installation if cache hit
+            run: |
+              /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 
-        - name: Install Homebrew
-          if: steps.cache.outputs.cache-hit != 'true' # Skip installation if cache hit
-          run: |
-            /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+          - name: Cache Homebrew
+            uses: actions/cache@v3
+            with:
+              path: /usr/local/Homebrew
+              key: ${{ runner.os }}-brew-${{ hashFiles('**/Brewfile.lock.json') }}
+              restore-keys: ${{ runner.os }}-brew-
 
-        - name: Install dependencies
-          run: |
-            brew bundle install --file=Path/To/Brewfile
-
-        - name: Save Homebrew cache
-          uses: actions/cache@v2
-          with:
-            path: /usr/local/Homebrew
-            key: ${{ runner.os }}-brew-${{ hashFiles('**/Brewfile.lock.json') }}
-            restore-keys: ${{ runner.os }}-brew-
+          - name: Save Homebrew cache
+            uses: actions/cache@v3
+            with:
+              path: /usr/local/Homebrew
+              key: ${{ runner.os }}-brew-${{ hashFiles('**/Brewfile.lock.json') }}
+              restore-keys: ${{ runner.os }}-brew-
       # - name: Checkout project
       #   uses: actions/checkout@v3
       #   with:
