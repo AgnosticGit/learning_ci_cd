@@ -1,44 +1,57 @@
 name: CI
-on: [push]
+
+on:
+  push:
+    branches:
+      - main
+  
 jobs:
   build:
-    runs-on: macOS-latest
+    runs-on: ubuntu-latest
+
     steps:
-      - name: Checkout code
+      - name: Checkout repo
         uses: actions/checkout@v2
         with:
-          ref: ecc3beee7053634377f0e12667248c95cd888f24 # коммит, на котором должен происходить кэш
-      - name: Install Rust, LLVM, NodeJS
-        uses: actions-rs/toolchain@v1
-        with:
-          profile: minimal
-          toolchain: stable
-          components: rustfmt,rust-src,llvm,nodejs
-      - name: Cache Nekoton build dependencies
-        uses: actions/cache@v2
-        with:
-          path: |
-            ./nekoton/target
-            ~/.cargo/registry/index
-            ~/.cargo/registry/cache
-            ~/.cargo/git
-          key: ${{ runner.os }}-nekoton-build-${{ hashFiles('**/Cargo.lock') }}-${{ env.IMAGE_COMMIT_SHA }}
-          restore-keys: |
-            ${{ runner.os }}-nekoton-build-${{ hashFiles('**/Cargo.lock') }}-
-            ${{ runner.os }}-nekoton-build-
-      - name: Build Nekoton for iOS
-        run: |
-          cd nekoton
-          cargo lipo --release --targets=aarch64-apple-ios,armv7-apple-ios,armv7s-apple-ios
-          mkdir -p ./target/ios
-          cp target/universal/release/libnekoton.a ./target/ios
-        env:
-          RUSTFLAGS: -C link-arg=-Wl,-dead_strip
-      - name: Archive Nekoton build artifacts
-        uses: actions/upload-artifact@v2
-        with:
-          name: nekoton-ios
-          path: ./nekoton/target/ios
+          ref: ecc3beee7053634377f0e12667248c95cd888f24
+          repository: broxus/nekoton-flutter
+
+      # - name: Cache dependencies
+      #   uses: actions/cache@v3
+      #   with:
+      #     path: |
+      #       ~/.pub-cache
+      #     key: ${{ runner.os }}-pub-${{ hashFiles('**/pubspec.lock') }}
+      #     restore-keys: |
+      #       ${{ runner.os }}-pub-
+
+      # - name: Install dependencies
+      #   run: |
+      #     sudo apt-get update
+      #     sudo apt-get install -y curl git unzip xz-utils zip libglu1-mesa
+
+      #     curl https://sh.rustup.rs -sSf | sh -s -- -y
+      #     export PATH="$HOME/.cargo/bin:$PATH"
+
+      #     curl -sL https://deb.nodesource.com/setup_16.x | sudo -E bash -
+      #     sudo apt-get install -y nodejs
+
+      #     curl -sSf https://build.travis-ci.org/files/rustup-init.sh | sh -s -- -y
+      #     export PATH="$HOME/.cargo/bin:$PATH"
+      #     rustup target add aarch64-apple-ios armv7-apple-ios armv7s-apple-ios i686-linux-android x86_64-linux-android arm-linux-androideabi aarch64-linux-android
+
+      #     curl -L -O https://github.com/google/llvm-prebuilt-binary/releases/download/12.0.0/clang-12.0.0-x86_64-linux-gnu-ubuntu-20.04.tar.xz
+      #     tar -xvf clang-12.0.0-x86_64-linux-gnu-ubuntu-20.04.tar.xz
+      #     export PATH="$PWD/clang+llvm-12.0.0-x86_64-linux-gnu-ubuntu-20.04/bin:$PATH"
+
+      #     git clone https://github.com/broxus/nekoton-flutter.git
+      #     cd nekoton-flutter
+      #     git checkout $COMMIT_SHA
+
+      # - name: Build Nekoton
+      #   run: |
+      #     flutter pub get
+      #     flutter pub run nekoton_flutter:build
 
       # continue with your build steps for iOS and Android
 
