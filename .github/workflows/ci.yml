@@ -5,31 +5,52 @@ on:
       - main
 
 jobs: 
-  build_ios:
-    name: Build iOS
-    runs-on: macos-latest
-    steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-java@v3
-        with:
-          distribution: 'oracle'
-          java-version: "17"
-      - uses: subosito/flutter-action@v2
-        with: 
-          channel: stable
-      - run: flutter build ios --no-codesign
-
-  build_appbundle:
-    name: Build Android
+  build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-java@v3
+      - uses: actions/checkout@v2
+      - name: Cache nekoton directory
+        uses: actions/cache@v2
         with:
-          distribution: 'oracle'
-          java-version: "17"
-      - uses: subosito/flutter-action@v2
-        with: 
-          channel: stable
-      - run: flutter build appbundle
+          path: ../nekoton
+          key: ${{ runner.os }}-nekoton-${{ hashFiles('../nekoton/**') }}
+          restore-keys: ${{ runner.os }}-nekoton-
+      - name: Install Rust, LLVM and NodeJS
+        run: |
+          curl https://sh.rustup.rs -sSf | sh -s -- -y
+          rustup default stable
+          curl -L https://github.com/llvm/llvm-project/releases/download/llvmorg-13.0.0/clang+llvm-13.0.0-x86_64-linux-gnu-ubuntu-20.04.tar.xz -o llvm.tar.xz
+          tar xf llvm.tar.xz
+          export PATH=$PWD/clang+llvm-13.0.0-x86_64-linux-gnu-ubuntu-20.04/bin:$PATH
+          curl -fsSL https://deb.nodesource.com/setup_current.x | bash -
+          apt-get install -y nodejs
+      - name: Build nekoton
+        run: cd ../nekoton && flutter pub run nekoton_flutter:build
+  # build_ios:
+  #   name: Build iOS
+  #   runs-on: macos-latest
+  #   steps:
+  #     - uses: actions/checkout@v3
+  #     - uses: actions/setup-java@v3
+  #       with:
+  #         distribution: 'oracle'
+  #         java-version: "17"
+  #     - uses: subosito/flutter-action@v2
+  #       with: 
+  #         channel: stable
+  #     - run: flutter build ios --no-codesign
+
+  # build_appbundle:
+  #   name: Build Android
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - uses: actions/checkout@v3
+  #     - uses: actions/setup-java@v3
+  #       with:
+  #         distribution: 'oracle'
+  #         java-version: "17"
+  #     - uses: subosito/flutter-action@v2
+  #       with: 
+  #         channel: stable
+  #     - run: flutter build appbundle
       
