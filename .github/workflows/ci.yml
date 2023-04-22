@@ -11,7 +11,7 @@ jobs:
 
     steps:
       - name: Cache Homebrew
-        id: jopa
+        id: home_brew_cache
         uses: actions/cache@v3
         with:
           path: /usr/local/Homebrew
@@ -20,10 +20,10 @@ jobs:
 
       - name: Display cache-hit value
         run: | 
-          echo "Cache hit value: ${{ steps.cache.outputs.cache-hit }}"
+          echo "Cache hit value: ${{ steps.home_brew_cache.outputs.cache-hit }}"
 
       - name: Install Homebrew 
-        if: ${{ steps.cache.outputs.cache-hit != 'true' }} 
+        if: ${{ steps.home_brew_cache.outputs.cache-hit != 'true' }} 
         run: |
           /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 
