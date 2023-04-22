@@ -27,6 +27,8 @@ jobs:
         with:
           path: nekoton-flutter
           key: ${{ runner.os }}-nekoton-flutter
+
+      - name: check epta
         run: | 
           pwd
           ls -lah
