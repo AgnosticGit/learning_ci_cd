@@ -21,7 +21,7 @@ jobs:
         with:
           path: nekoton-flutter
           key: ${{ runner.os }}-nekoton-flutter
-        run: ls -lah
+        run: [ls -lah]
 
       # - name: Install dependencies
       #   run: |
