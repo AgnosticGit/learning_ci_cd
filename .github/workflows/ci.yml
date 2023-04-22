@@ -43,14 +43,24 @@ jobs:
         if: ${{ steps.llvm_cache.outputs.cache-hit != 'true' }} 
         run: |
           brew install llvm
+      
+      - name: which llvm
+        run: |
+          which llvm
+          which llvm-config
 
-      - name: Save LLVM Cache if not cached yet
-        if: ${{ steps.llvm_cache.outputs.cache-hit != 'true' }}
-        uses: actions/cache@v3
-        with:
-          path: /usr/local/llvm
-          key: ${{ runner.os }}-llvm-${{ hashFiles('**/Brewfile.lock.json') }}
-          restore-keys: ${{ runner.os }}-llvm- 
+      - name: which llvm-cfg
+        run: |
+          which llvm-config
+
+
+      # - name: Save LLVM Cache if not cached yet
+      #   if: ${{ steps.llvm_cache.outputs.cache-hit != 'true' }}
+      #   uses: actions/cache@v3
+      #   with:
+      #     path: /usr/local/llvm
+      #     key: ${{ runner.os }}-llvm-${{ hashFiles('**/Brewfile.lock.json') }}
+      #     restore-keys: ${{ runner.os }}-llvm- 
       
       # - name: Checkout project
       #   uses: actions/checkout@v3
