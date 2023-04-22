@@ -17,10 +17,10 @@ jobs:
           repository: broxus/nekoton-flutter
 
       - name: Cache dependencies
-        uses: actions/cache@v3    
-        with:
-          path: nekoton-flutter
-          key: ${{ runner.os }}-nekoton-flutter
+        # uses: actions/cache@v3    
+        # with:
+          # path: nekoton-flutter
+          # key: ${{ runner.os }}-nekoton-flutter
         run: | 
           ls -lah
 
