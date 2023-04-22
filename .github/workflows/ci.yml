@@ -18,7 +18,8 @@ jobs:
       #     restore-keys: ${{ runner.os }}-brew-
 
       - name: Display cache-hit value
-        run: echo "Cache hit value: ${{ steps.cache.outputs.cache-hit }}"
+        run: | 
+          echo "Cache hit value: ${{ steps.cache.outputs.cache-hit }}"
 
       - name: Install Homebrew
         if: ${{ steps.cache.outputs.cache-hit != 'true' }} 
