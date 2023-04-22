@@ -19,8 +19,9 @@ jobs:
       - name: Cache dependencies
         uses: actions/cache@v3    
         with:
-          path: ~/nekoton-flutter
+          path: nekoton-flutter
           key: ${{ runner.os }}-nekoton-flutter
+        run: ls -lah
 
       # - name: Install dependencies
       #   run: |
