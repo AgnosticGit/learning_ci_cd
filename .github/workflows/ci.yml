@@ -10,10 +10,10 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout project
-        uses: actions/checkout@v3
-        with:
-          path: learning_ci_cd
+      # - name: Checkout project
+      #   uses: actions/checkout@v3
+      #   with:
+      #     path: learning_ci_cd
 
       - name: Checkout nekoton-flutter
         uses: actions/checkout@v3
@@ -28,7 +28,6 @@ jobs:
           (echo; echo 'eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"') >> /home/runner/.bash_profile
           eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
           brew install llvm@15
-          llvm-config --version      
 
       - name: Cache nekoton
         uses: actions/cache@v3    
