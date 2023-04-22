@@ -1,10 +1,11 @@
 name: CI
+
 on:
   push:
     branches:
-      - main
+      - dev
 
-jobs: 
+jobs:
   build:
     runs-on: ubuntu-latest
     steps:
@@ -12,8 +13,8 @@ jobs:
       - name: Cache nekoton directory
         uses: actions/cache@v2
         with:
-          path: ../nekoton
-          key: ${{ runner.os }}-nekoton-${{ hashFiles('../nekoton/**') }}
+          path: ../nekoton-flutter
+          key: ${{ runner.os }}-nekoton-${{ hashFiles('../nekoton-flutter/**') }}
           restore-keys: ${{ runner.os }}-nekoton-
       - name: Install Rust, LLVM and NodeJS
         run: |
@@ -25,7 +26,8 @@ jobs:
           curl -fsSL https://deb.nodesource.com/setup_current.x | bash -
           apt-get install -y nodejs
       - name: Build nekoton
-        run: cd ../nekoton && flutter pub run nekoton_flutter:build
+        run: cd ../nekoton-flutter && flutter pub run nekoton_flutter:build
+
   # build_ios:
   #   name: Build iOS
   #   runs-on: macos-latest
