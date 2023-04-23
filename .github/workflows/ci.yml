@@ -63,7 +63,7 @@ jobs:
       - name: Install "Rust" if not cached yet
         if: ${{ steps.rust_cache.outputs.cache-hit != 'true' }} 
         run: |
-          curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+          curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -- -y
 
       - name: Save "Rust" Cache if not cached yet
         if: ${{ steps.rust_cache.outputs.cache-hit != 'true' }}
