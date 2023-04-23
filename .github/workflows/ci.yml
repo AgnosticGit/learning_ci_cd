@@ -74,28 +74,35 @@ jobs:
           key: ${{ runner.os }}-rust-${{ hashFiles('**/Brewfile.lock.json') }}
           restore-keys: ${{ runner.os }}-rust- 
 
-      # - name: Get "nekoton-flutter" cache
-      #   id: nekoton_flutter_cache
-      #   uses: actions/cache@v3
-      #   with:
-      #     path: /Users/runner/work/learning_ci_cd/nekoton-flutter
-      #     key: ${{ runner.os }}-nekoton-flutter-${{ hashFiles('**/Brewfile.lock.json') }}
-      #     restore-keys: ${{ runner.os }}-nekoton-flutter-
+      - name: Get "nekoton-flutter" cache
+        id: nekoton_flutter_cache
+        uses: actions/cache@v3
+        with:
+          path: /Users/runner/work/learning_ci_cd/nekoton-flutter
+          key: ${{ runner.os }}-nekoton-flutter-${{ hashFiles('**/Brewfile.lock.json') }}
+          restore-keys: ${{ runner.os }}-nekoton-flutter-
 
-      # - name: Checkout "nekoton-flutter"
-      #   uses: actions/checkout@v3
-      #   with:
-      #     path: /Users/runner/work/learning_ci_cd/nekoton-flutter
-      #     ref: ecc3beee7053634377f0e12667248c95cd888f24
-      #     repository: broxus/nekoton-flutter
+      - name: Checkout "nekoton-flutter"
+        if: ${{ steps.nekoton_flutter_cache.outputs.cache-hit != 'true' }}
+        uses: actions/checkout@v3
+        with:
+          path: /Users/runner/work/learning_ci_cd/nekoton-flutter
+          ref: ecc3beee7053634377f0e12667248c95cd888f24
+          repository: broxus/nekoton-flutter
 
-      # - name: Save "nekoton-flutter" Cache if not cached yet
-      #   if: ${{ steps.llvm_cache.outputs.cache-hit != 'true' }}
-      #   uses: actions/cache@v3
-      #   with:
-      #     path: /Users/runner/work/learning_ci_cd/nekoton-flutter
-      #     key: ${{ runner.os }}-nekoton-flutter-${{ hashFiles('**/Brewfile.lock.json') }}
-      #     restore-keys: ${{ runner.os }}-nekoton-flutter- 
+      - name: Build "nekoton-flutter"
+        if: ${{ steps.nekoton_flutter_cache.outputs.cache-hit != 'true' }}
+        run: |
+          cd nekoton-flutter
+          flutter pub run nekoton_flutter:build
+
+      - name: Save "nekoton-flutter" Cache if not cached yet
+        if: ${{ steps.nekoton_flutter_cache.outputs.cache-hit != 'true' }}
+        uses: actions/cache@v3
+        with:
+          path: /Users/runner/work/learning_ci_cd/nekoton-flutter
+          key: ${{ runner.os }}-nekoton-flutter-${{ hashFiles('**/Brewfile.lock.json') }}
+          restore-keys: ${{ runner.os }}-nekoton-flutter- 
       
       # - name: Checkout project
       #   uses: actions/checkout@v3
