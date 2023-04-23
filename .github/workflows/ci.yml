@@ -35,42 +35,66 @@ jobs:
         id: llvm_cache
         uses: actions/cache@v3
         with:
-          path: /usr/local/llvm
+          path: /usr/local/opt/llvm
           key: ${{ runner.os }}-llvm-${{ hashFiles('**/Brewfile.lock.json') }}
           restore-keys: ${{ runner.os }}-llvm-
 
-      - name: Install LLVM if not cached yet
+      - name: Install "LLVM" if not cached yet
         if: ${{ steps.llvm_cache.outputs.cache-hit != 'true' }} 
         run: |
           brew install llvm
 
-      - name: Save LLVM Cache if not cached yet
+      - name: Save "LLVM" Cache if not cached yet
         if: ${{ steps.llvm_cache.outputs.cache-hit != 'true' }}
         uses: actions/cache@v3
         with:
           path: /usr/local/opt/llvm
           key: ${{ runner.os }}-llvm-${{ hashFiles('**/Brewfile.lock.json') }}
           restore-keys: ${{ runner.os }}-llvm- 
+      
+      - name: Get "Rust" cache
+        id: rust_cache
+        uses: actions/cache@v3
+        with:
+          path: /Users/home/.cargo
+          key: ${{ runner.os }}-rust_cache-${{ hashFiles('**/Brewfile.lock.json') }}
+          restore-keys: ${{ runner.os }}-rust_cache-
 
-      - name: show pwd
+      - name: Install "Rust" if not cached yet
+        if: ${{ steps.rust_cache.outputs.cache-hit != 'true' }} 
         run: |
-          pwd
-          ls -lah
+          curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+
+      - name: Save "Rust" Cache if not cached yet
+        if: ${{ steps.rust_cache.outputs.cache-hit != 'true' }}
+        uses: actions/cache@v3
+        with:
+          path: /Users/home/.cargo
+          key: ${{ runner.os }}-rust_cache-${{ hashFiles('**/Brewfile.lock.json') }}
+          restore-keys: ${{ runner.os }}-rust_cache- 
 
       # - name: Get "nekoton-flutter" cache
       #   id: nekoton_flutter_cache
       #   uses: actions/cache@v3
       #   with:
-      #     path: ~
-      #     key: ${{ runner.os }}-brew-${{ hashFiles('**/Brewfile.lock.json') }}
-      #     restore-keys: ${{ runner.os }}-brew-
+      #     path: /Users/runner/work/learning_ci_cd/nekoton-flutter
+      #     key: ${{ runner.os }}-nekoton-flutter-${{ hashFiles('**/Brewfile.lock.json') }}
+      #     restore-keys: ${{ runner.os }}-nekoton-flutter-
 
-      # - name: Checkout nekoton-flutter
+      # - name: Checkout "nekoton-flutter"
       #   uses: actions/checkout@v3
       #   with:
-      #     path: nekoton-flutter
+      #     path: /Users/runner/work/learning_ci_cd/nekoton-flutter
       #     ref: ecc3beee7053634377f0e12667248c95cd888f24
       #     repository: broxus/nekoton-flutter
+
+      # - name: Save "nekoton-flutter" Cache if not cached yet
+      #   if: ${{ steps.llvm_cache.outputs.cache-hit != 'true' }}
+      #   uses: actions/cache@v3
+      #   with:
+      #     path: /Users/runner/work/learning_ci_cd/nekoton-flutter
+      #     key: ${{ runner.os }}-nekoton-flutter-${{ hashFiles('**/Brewfile.lock.json') }}
+      #     restore-keys: ${{ runner.os }}-nekoton-flutter- 
       
       # - name: Checkout project
       #   uses: actions/checkout@v3
