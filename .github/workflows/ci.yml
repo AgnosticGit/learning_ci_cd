@@ -82,13 +82,12 @@ jobs:
           key: ${{ runner.os }}-nekoton-flutter-${{ hashFiles('**/Brewfile.lock.json') }}
           restore-keys: ${{ runner.os }}-nekoton-flutter-
 
-      - name: Setup Java
+      
         uses: actions/setup-java@v3
           with:
             distribution: 'oracle'
             java-version: "17"
 
-      - name: Setup Flutter
         uses: subosito/flutter-action@v2
           with: 
             channel: stable
