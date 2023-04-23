@@ -6,7 +6,7 @@ on:
       - main
   
 jobs:
-  cache_nekoton:
+  prepare_nekoton:
     runs-on: macos-latest
 
     steps:
@@ -51,11 +51,19 @@ jobs:
           path: /usr/local/opt/llvm
           key: ${{ runner.os }}-llvm-${{ hashFiles('**/Brewfile.lock.json') }}
           restore-keys: ${{ runner.os }}-llvm- 
-      
-      # - name: Checkout project
-      #   uses: actions/checkout@v3
+
+      - name: show pwd
+        run: |
+          pwd
+          ls -lah
+
+      # - name: Get "nekoton-flutter" cache
+      #   id: nekoton_flutter_cache
+      #   uses: actions/cache@v3
       #   with:
-      #     path: learning_ci_cd
+      #     path: ~
+      #     key: ${{ runner.os }}-brew-${{ hashFiles('**/Brewfile.lock.json') }}
+      #     restore-keys: ${{ runner.os }}-brew-
 
       # - name: Checkout nekoton-flutter
       #   uses: actions/checkout@v3
@@ -63,6 +71,13 @@ jobs:
       #     path: nekoton-flutter
       #     ref: ecc3beee7053634377f0e12667248c95cd888f24
       #     repository: broxus/nekoton-flutter
+      
+      # - name: Checkout project
+      #   uses: actions/checkout@v3
+      #   with:
+      #     path: learning_ci_cd
+
+
 
       # - name: Build nekoton-flutter
       #   run: |
