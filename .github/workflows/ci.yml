@@ -90,6 +90,7 @@ jobs:
           java-version: "17"
 
       - name: Setup Flutter
+        uses: actions/checkout@v3
         uses: subosito/flutter-action@v2
         with: 
           channel: stable
@@ -116,7 +117,7 @@ jobs:
         if: ${{ steps.nekoton_flutter_cache.outputs.cache-hit != 'true' }}
         uses: actions/cache@v3
         with:
-          path: /Users/runner/work/learning_ci_cd/nekoton-flutter
+          path: /Users/runner/work/learning_ci_cd/learning_ci_cd/nekoton-flutter
           key: ${{ runner.os }}-nekoton-flutter-${{ hashFiles('**/Brewfile.lock.json') }}
           restore-keys: ${{ runner.os }}-nekoton-flutter- 
       
