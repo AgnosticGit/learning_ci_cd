@@ -35,7 +35,7 @@ jobs:
         id: llvm_cache
         uses: actions/cache@v3
         with:
-          path: /usr/runner/opt/llvm
+          path: /usr/local/opt/llvm
           key: ${{ runner.os }}-llvm-${{ hashFiles('**/Brewfile.lock.json') }}
           restore-keys: ${{ runner.os }}-llvm-
 
@@ -53,7 +53,7 @@ jobs:
         if: ${{ steps.llvm_cache.outputs.cache-hit != 'true' }}
         uses: actions/cache@v3
         with:
-          path: /usr/runner/opt/llvm
+          path: /usr/local/opt/llvm
           key: ${{ runner.os }}-llvm-${{ hashFiles('**/Brewfile.lock.json') }}
           restore-keys: ${{ runner.os }}-llvm- 
       
