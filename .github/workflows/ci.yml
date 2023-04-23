@@ -43,6 +43,7 @@ jobs:
         if: ${{ steps.llvm_cache.outputs.cache-hit != 'true' }} 
         run: |
           brew install llvm
+          echo 'export PATH="/usr/local/opt/llvm/bin:$PATH"' >> /Users/runner/.bash_profile
 
       - name: where llvm
         run: |
