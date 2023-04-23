@@ -95,7 +95,7 @@ jobs:
         uses: subosito/flutter-action@v2
         with: 
           channel: stable
-          flutter-version: $FLUTTER_VERSION
+          flutter-version: '3.7.10'
           cache-key: 'flutter-:os:-:channel:-:version:-:arch:-:hash:'
           cache: true
 
