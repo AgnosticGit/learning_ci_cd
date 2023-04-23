@@ -15,8 +15,8 @@ jobs:
         uses: actions/cache@v3
         with:
           path: /usr/local/Homebrew
-          key: ${{ runner.os }}-brew-${{ hashFiles('**/Brewfile.lock.json') }}
-          restore-keys: ${{ runner.os }}-brew-
+          key: ${{ runner.os }}-homebrew-${{ hashFiles('**/Brewfile.lock.json') }}
+          restore-keys: ${{ runner.os }}-homebrew-
 
       - name: Install Homebrew if not cached yet
         if: ${{ steps.home_brew_cache.outputs.cache-hit != 'true' }} 
@@ -28,8 +28,8 @@ jobs:
         uses: actions/cache@v3
         with:
           path: /usr/local/Homebrew
-          key: ${{ runner.os }}-brew-${{ hashFiles('**/Brewfile.lock.json') }}
-          restore-keys: ${{ runner.os }}-brew- 
+          key: ${{ runner.os }}-homebrew-${{ hashFiles('**/Brewfile.lock.json') }}
+          restore-keys: ${{ runner.os }}-homebrew- 
       
       - name: Get "LLVM" cache
         id: llvm_cache
@@ -45,10 +45,6 @@ jobs:
           brew install llvm
           echo 'export PATH="/usr/local/opt/llvm/bin:$PATH"' >> /Users/runner/.bash_profile
 
-      - name: where llvm
-        run: |
-          which llvm-config
-
       - name: Save "LLVM" Cache if not cached yet
         if: ${{ steps.llvm_cache.outputs.cache-hit != 'true' }}
         uses: actions/cache@v3
@@ -62,8 +58,8 @@ jobs:
         uses: actions/cache@v3
         with:
           path: /Users/runner/.cargo
-          key: ${{ runner.os }}-rust_cache-${{ hashFiles('**/Brewfile.lock.json') }}
-          restore-keys: ${{ runner.os }}-rust_cache-
+          key: ${{ runner.os }}-rust-${{ hashFiles('**/Brewfile.lock.json') }}
+          restore-keys: ${{ runner.os }}-rust-
 
       - name: Install "Rust" if not cached yet
         if: ${{ steps.rust_cache.outputs.cache-hit != 'true' }} 
@@ -76,8 +72,8 @@ jobs:
         uses: actions/cache@v3
         with:
           path: /Users/runner/.cargo
-          key: ${{ runner.os }}-rust_cache-${{ hashFiles('**/Brewfile.lock.json') }}
-          restore-keys: ${{ runner.os }}-rust_cache- 
+          key: ${{ runner.os }}-rust-${{ hashFiles('**/Brewfile.lock.json') }}
+          restore-keys: ${{ runner.os }}-rust- 
 
       # - name: Get "nekoton-flutter" cache
       #   id: nekoton_flutter_cache
