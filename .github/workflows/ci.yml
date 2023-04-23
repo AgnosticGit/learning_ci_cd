@@ -13,77 +13,77 @@ jobs:
     runs-on: macos-latest
 
     steps:
-      - name: Get "Homebrew" cache
-        id: home_brew_cache
-        uses: actions/cache@v3
-        with:
-          path: /usr/local/Homebrew
-          key: ${{ runner.os }}-homebrew-${{ hashFiles('**/Brewfile.lock.json') }}
-          restore-keys: ${{ runner.os }}-homebrew-
+      # - name: Get "Homebrew" cache
+      #   id: home_brew_cache
+      #   uses: actions/cache@v3
+      #   with:
+      #     path: /usr/local/Homebrew
+      #     key: ${{ runner.os }}-homebrew-${{ hashFiles('**/Brewfile.lock.json') }}
+      #     restore-keys: ${{ runner.os }}-homebrew-
 
-      - name: Install Homebrew if not cached yet
-        if: ${{ steps.home_brew_cache.outputs.cache-hit != 'true' }} 
-        run: |
-          /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+      # - name: Install Homebrew if not cached yet
+      #   if: ${{ steps.home_brew_cache.outputs.cache-hit != 'true' }} 
+      #   run: |
+      #     /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 
-      - name: Save Homebrew Cache if not cached yet
-        if: ${{ steps.home_brew_cache.outputs.cache-hit != 'true' }}
-        uses: actions/cache@v3
-        with:
-          path: /usr/local/Homebrew
-          key: ${{ runner.os }}-homebrew-${{ hashFiles('**/Brewfile.lock.json') }}
-          restore-keys: ${{ runner.os }}-homebrew- 
+      # - name: Save Homebrew Cache if not cached yet
+      #   if: ${{ steps.home_brew_cache.outputs.cache-hit != 'true' }}
+      #   uses: actions/cache@v3
+      #   with:
+      #     path: /usr/local/Homebrew
+      #     key: ${{ runner.os }}-homebrew-${{ hashFiles('**/Brewfile.lock.json') }}
+      #     restore-keys: ${{ runner.os }}-homebrew- 
       
-      - name: Get "LLVM" cache
-        id: llvm_cache
-        uses: actions/cache@v3
-        with:
-          path: /usr/local/opt/llvm
-          key: ${{ runner.os }}-llvm-${{ hashFiles('**/Brewfile.lock.json') }}
-          restore-keys: ${{ runner.os }}-llvm-
+      # - name: Get "LLVM" cache
+      #   id: llvm_cache
+      #   uses: actions/cache@v3
+      #   with:
+      #     path: /usr/local/opt/llvm
+      #     key: ${{ runner.os }}-llvm-${{ hashFiles('**/Brewfile.lock.json') }}
+      #     restore-keys: ${{ runner.os }}-llvm-
 
-      - name: Install "LLVM" if not cached yet
-        if: ${{ steps.llvm_cache.outputs.cache-hit != 'true' }} 
-        run: |
-          brew install llvm
+      # - name: Install "LLVM" if not cached yet
+      #   if: ${{ steps.llvm_cache.outputs.cache-hit != 'true' }} 
+      #   run: |
+      #     brew install llvm
 
-      - name: Save "LLVM" Cache if not cached yet
-        if: ${{ steps.llvm_cache.outputs.cache-hit != 'true' }}
-        uses: actions/cache@v3
-        with:
-          path: /usr/local/opt/llvm
-          key: ${{ runner.os }}-llvm-${{ hashFiles('**/Brewfile.lock.json') }}
-          restore-keys: ${{ runner.os }}-llvm- 
+      # - name: Save "LLVM" Cache if not cached yet
+      #   if: ${{ steps.llvm_cache.outputs.cache-hit != 'true' }}
+      #   uses: actions/cache@v3
+      #   with:
+      #     path: /usr/local/opt/llvm
+      #     key: ${{ runner.os }}-llvm-${{ hashFiles('**/Brewfile.lock.json') }}
+      #     restore-keys: ${{ runner.os }}-llvm- 
       
-      - name: Get "Rust" cache
-        id: rust_cache
-        uses: actions/cache@v3
-        with:
-          path: /Users/runner/.cargo
-          key: ${{ runner.os }}-rust-${{ hashFiles('**/Brewfile.lock.json') }}
-          restore-keys: ${{ runner.os }}-rust-
+      # - name: Get "Rust" cache
+      #   id: rust_cache
+      #   uses: actions/cache@v3
+      #   with:
+      #     path: /Users/runner/.cargo
+      #     key: ${{ runner.os }}-rust-${{ hashFiles('**/Brewfile.lock.json') }}
+      #     restore-keys: ${{ runner.os }}-rust-
 
-      - name: Install "Rust" if not cached yet
-        if: ${{ steps.rust_cache.outputs.cache-hit != 'true' }} 
-        run: |
-          curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
-          source "$HOME/.cargo/env"
+      # - name: Install "Rust" if not cached yet
+      #   if: ${{ steps.rust_cache.outputs.cache-hit != 'true' }} 
+      #   run: |
+      #     curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
+      #     source "$HOME/.cargo/env"
 
-      - name: Save "Rust" Cache if not cached yet
-        if: ${{ steps.rust_cache.outputs.cache-hit != 'true' }}
-        uses: actions/cache@v3 
-        with:
-          path: /Users/runner/.cargo
-          key: ${{ runner.os }}-rust-${{ hashFiles('**/Brewfile.lock.json') }}
-          restore-keys: ${{ runner.os }}-rust- 
+      # - name: Save "Rust" Cache if not cached yet
+      #   if: ${{ steps.rust_cache.outputs.cache-hit != 'true' }}
+      #   uses: actions/cache@v3 
+      #   with:
+      #     path: /Users/runner/.cargo
+      #     key: ${{ runner.os }}-rust-${{ hashFiles('**/Brewfile.lock.json') }}
+      #     restore-keys: ${{ runner.os }}-rust- 
 
-      - name: Get "nekoton-flutter" cache
-        id: nekoton_flutter_cache
-        uses: actions/cache@v3
-        with:
-          path: /Users/runner/work/learning_ci_cd/nekoton-flutter
-          key: ${{ runner.os }}-nekoton-flutter-${{ hashFiles('**/Brewfile.lock.json') }}
-          restore-keys: ${{ runner.os }}-nekoton-flutter-
+      # - name: Get "nekoton-flutter" cache
+      #   id: nekoton_flutter_cache
+      #   uses: actions/cache@v3
+      #   with:
+      #     path: /Users/runner/work/learning_ci_cd/nekoton-flutter
+      #     key: ${{ runner.os }}-nekoton-flutter-${{ hashFiles('**/Brewfile.lock.json') }}
+      #     restore-keys: ${{ runner.os }}-nekoton-flutter-
 
       - name: Setup Java
         uses: actions/setup-java@v3
@@ -99,29 +99,38 @@ jobs:
           cache-key: 'flutter-:os:-:channel:-:version:-:arch:-:hash:'
           cache: true
 
-      - name: Checkout "nekoton-flutter"
-        if: ${{ steps.nekoton_flutter_cache.outputs.cache-hit != 'true' }}
-        uses: actions/checkout@v3
-        with:
-          path: /Users/runner/work/learning_ci_cd/learning_ci_cd/nekoton-flutter
-          repository: broxus/nekoton-flutter
-          ref: ecc3beee7053634377f0e12667248c95cd888f24
+      # - name: Checkout "nekoton-flutter"
+      #   if: ${{ steps.nekoton_flutter_cache.outputs.cache-hit != 'true' }}
+      #   uses: actions/checkout@v3
+      #   with:
+      #     path: /Users/runner/work/learning_ci_cd/learning_ci_cd/nekoton-flutter
+      #     repository: broxus/nekoton-flutter
+      #     ref: ecc3beee7053634377f0e12667248c95cd888f24
           
-      - name: Build "nekoton-flutter"
-        if: ${{ steps.nekoton_flutter_cache.outputs.cache-hit != 'true' }}
-        run: |
-          cd nekoton-flutter
-          flutter pub get
-          flutter pub run nekoton_flutter:build
+      # - name: Build "nekoton-flutter"
+      #   if: ${{ steps.nekoton_flutter_cache.outputs.cache-hit != 'true' }}
+      #   run: |
+      #     cd nekoton-flutter
+      #     flutter pub get
+      #     flutter pub run nekoton_flutter:build
 
-      - name: Save "nekoton-flutter" Cache if not cached yet
-        if: ${{ steps.nekoton_flutter_cache.outputs.cache-hit != 'true' }}
-        uses: actions/cache@v3
-        with:
-          path: /Users/runner/work/learning_ci_cd/nekoton-flutter
-          key: ${{ runner.os }}-nekoton-flutter-${{ hashFiles('**/Brewfile.lock.json') }}
-          restore-keys: ${{ runner.os }}-nekoton-flutter- 
+      # - name: Save "nekoton-flutter" Cache if not cached yet
+      #   if: ${{ steps.nekoton_flutter_cache.outputs.cache-hit != 'true' }}
+      #   uses: actions/cache@v3
+      #   with:
+      #     path: /Users/runner/work/learning_ci_cd/nekoton-flutter
+      #     key: ${{ runner.os }}-nekoton-flutter-${{ hashFiles('**/Brewfile.lock.json') }}
+      #     restore-keys: ${{ runner.os }}-nekoton-flutter- 
       
+
+
+
+
+
+
+
+
+
       # - name: Checkout project
       #   uses: actions/checkout@v3
       #   with:
