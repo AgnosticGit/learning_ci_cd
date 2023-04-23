@@ -31,26 +31,26 @@ jobs:
           key: ${{ runner.os }}-brew-${{ hashFiles('**/Brewfile.lock.json') }}
           restore-keys: ${{ runner.os }}-brew- 
       
-      - name: Get "LLVM" cache
-        id: llvm_cache
-        uses: actions/cache@v3
-        with:
-          path: /usr/local/opt/llvm
-          key: ${{ runner.os }}-llvm-${{ hashFiles('**/Brewfile.lock.json') }}
-          restore-keys: ${{ runner.os }}-llvm-
+      # - name: Get "LLVM" cache
+      #   id: llvm_cache
+      #   uses: actions/cache@v3
+      #   with:
+      #     path: /usr/local/opt/llvm
+      #     key: ${{ runner.os }}-llvm-${{ hashFiles('**/Brewfile.lock.json') }}
+      #     restore-keys: ${{ runner.os }}-llvm-
 
-      - name: Install "LLVM" if not cached yet
-        if: ${{ steps.llvm_cache.outputs.cache-hit != 'true' }} 
-        run: |
-          brew install llvm
+      # - name: Install "LLVM" if not cached yet
+      #   if: ${{ steps.llvm_cache.outputs.cache-hit != 'true' }} 
+      #   run: |
+      #     brew install llvm
 
-      - name: Save "LLVM" Cache if not cached yet
-        if: ${{ steps.llvm_cache.outputs.cache-hit != 'true' }}
-        uses: actions/cache@v3
-        with:
-          path: /usr/local/opt/llvm
-          key: ${{ runner.os }}-llvm-${{ hashFiles('**/Brewfile.lock.json') }}
-          restore-keys: ${{ runner.os }}-llvm- 
+      # - name: Save "LLVM" Cache if not cached yet
+      #   if: ${{ steps.llvm_cache.outputs.cache-hit != 'true' }}
+      #   uses: actions/cache@v3
+      #   with:
+      #     path: /usr/local/opt/llvm
+      #     key: ${{ runner.os }}-llvm-${{ hashFiles('**/Brewfile.lock.json') }}
+      #     restore-keys: ${{ runner.os }}-llvm- 
       
       - name: Get "Rust" cache
         id: rust_cache
@@ -63,7 +63,7 @@ jobs:
       - name: Install "Rust" if not cached yet
         if: ${{ steps.rust_cache.outputs.cache-hit != 'true' }} 
         run: |
-          curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -- -y
+          curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
 
       - name: Save "Rust" Cache if not cached yet
         if: ${{ steps.rust_cache.outputs.cache-hit != 'true' }}
