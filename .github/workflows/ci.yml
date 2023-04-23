@@ -1,5 +1,8 @@
 name: CI
 
+env:
+  FLUTTER_VERSION: "3.7.10"
+
 on:
   push:
     branches:
@@ -92,6 +95,9 @@ jobs:
         uses: subosito/flutter-action@v2
         with: 
           channel: stable
+          flutter-version: $FLUTTER-VERSION
+          cache-key: 'flutter-:os:-:channel:-:version:-:arch:-:hash:'
+          cache: true
 
       - name: Checkout "nekoton-flutter"
         if: ${{ steps.nekoton_flutter_cache.outputs.cache-hit != 'true' }}
@@ -105,6 +111,7 @@ jobs:
         if: ${{ steps.nekoton_flutter_cache.outputs.cache-hit != 'true' }}
         run: |
           cd nekoton-flutter
+          flutter pub get
           flutter pub run nekoton_flutter:build
 
       - name: Save "nekoton-flutter" Cache if not cached yet
