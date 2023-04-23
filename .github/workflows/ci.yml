@@ -43,11 +43,6 @@ jobs:
         if: ${{ steps.llvm_cache.outputs.cache-hit != 'true' }} 
         run: |
           brew install llvm
-          export PATH="/usr/local/opt/llvm/bin:$PATH"
-
-      - name: name
-        run: |
-          which llvm-config
 
       - name: Save "LLVM" Cache if not cached yet
         if: ${{ steps.llvm_cache.outputs.cache-hit != 'true' }}
