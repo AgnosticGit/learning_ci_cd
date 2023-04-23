@@ -45,6 +45,10 @@ jobs:
           brew install llvm
           echo 'export PATH="/usr/runner/opt/llvm/bin:$PATH"' >> /Users/runner/.bash_profile
 
+      - name: name
+        run: |
+          which llvm-config
+
       - name: Save "LLVM" Cache if not cached yet
         if: ${{ steps.llvm_cache.outputs.cache-hit != 'true' }}
         uses: actions/cache@v3
