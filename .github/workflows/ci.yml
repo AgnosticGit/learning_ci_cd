@@ -44,6 +44,10 @@ jobs:
         run: |
           brew install llvm
 
+      - name: where llvm
+        run: |
+          which llvm-config
+
       - name: Save "LLVM" Cache if not cached yet
         if: ${{ steps.llvm_cache.outputs.cache-hit != 'true' }}
         uses: actions/cache@v3
