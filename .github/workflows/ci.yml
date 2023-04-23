@@ -68,7 +68,7 @@ jobs:
 
       - name: show where is rust
         run: |
-          where rustup
+          which rustup
 
       - name: Save "Rust" Cache if not cached yet
         if: ${{ steps.rust_cache.outputs.cache-hit != 'true' }}
