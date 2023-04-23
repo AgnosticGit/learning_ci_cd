@@ -1,13 +1,13 @@
 name: CI
 
-env:
-  FLUTTER_VERSION: '3.7.10'
-
 on:
   push:
     branches:
       - main
-  
+
+env:
+  FLUTTER_VERSION: '3.7.10'
+
 jobs:
   prepare_nekoton:
     runs-on: macos-latest
@@ -95,7 +95,7 @@ jobs:
         uses: subosito/flutter-action@v2
         with: 
           channel: stable
-          flutter-version: '3.7.10'
+          flutter-version: $FLUTTER_VERSION
           cache-key: 'flutter-:os:-:channel:-:version:-:arch:-:hash:'
           cache: true
 
