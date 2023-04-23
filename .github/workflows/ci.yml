@@ -107,6 +107,7 @@ jobs:
           
       - name: Build "nekoton-flutter"
         if: ${{ steps.nekoton_flutter_cache.outputs.cache-hit != 'true' }}
+        continue-on-error: true
         run: |
           cd nekoton-flutter
           flutter pub get
@@ -120,89 +121,61 @@ jobs:
           key: ${{ runner.os }}-nekoton-flutter-${{ hashFiles('**/Brewfile.lock.json') }}
           restore-keys: ${{ runner.os }}-nekoton-flutter- 
       
+      - name: Checkout project
+        uses: actions/checkout@v3
+        with:
+          path: /Users/runner/work/learning_ci_cd/learning_ci_cd/learning_ci_cd
 
+      - name: Build AAB
+        run: |
+          cd learning_ci_cd
+          flutter build appbundle
 
+      - name: Sign AAB
+        uses: r0adkll/sign-android-release@v1
+        with:
+          releaseDirectory: build/app/outputs/bundle/release
+          signingKeyBase64: ${{ secrets.UPLOAD_KEY }}
+          alias: ${{ secrets.ALIAS }}
+          keyStorePassword: ${{ secrets.KEY_STORE_PASSWORD }}
+          keyPassword: ${{ secrets.KEY_PASSWORD }}
 
+      - name: Upload AAB to GitHub Actions
+        uses: actions/upload-artifact@v2
+        with:
+          name: Signed app bundle
+          path: ${{steps.sign_app.outputs.signedReleaseFile}}
+          retention-days: 4
 
-
-
-
-
-
-      # - name: Checkout project
-      #   uses: actions/checkout@v3
-      #   with:
-      #     path: learning_ci_cd
-
-
-
-      # - name: Build nekoton-flutter
-      #   run: |
-      #     /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-      #     (echo; echo 'eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"') >> /home/runner/.bash_profile
-      #     eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
-      #     brew install llvm@15
-
-      # - name: Cache nekoton
-      #   uses: actions/cache@v3    
-      #   with:
-      #     path: nekoton-flutter
-      #     key: ${{ runner.os }}-nekoton-flutter
-      # - name: Install dependencies
-      #   run: |
-      #     sudo apt-get update
-      #     sudo apt-get install -y curl git unzip xz-utils zip libglu1-mesa
-
-      #     curl https://sh.rustup.rs -sSf | sh -s -- -y
-      #     export PATH="$HOME/.cargo/bin:$PATH"
-
-      #     curl -sL https://deb.nodesource.com/setup_16.x | sudo -E bash -
-      #     sudo apt-get install -y nodejs
-
-      #     curl -sSf https://build.travis-ci.org/files/rustup-init.sh | sh -s -- -y
-      #     export PATH="$HOME/.cargo/bin:$PATH"
-      #     rustup target add aarch64-apple-ios armv7-apple-ios armv7s-apple-ios i686-linux-android x86_64-linux-android arm-linux-androideabi aarch64-linux-android
-
-      #     curl -L -O https://github.com/google/llvm-prebuilt-binary/releases/download/12.0.0/clang-12.0.0-x86_64-linux-gnu-ubuntu-20.04.tar.xz
-      #     tar -xvf clang-12.0.0-x86_64-linux-gnu-ubuntu-20.04.tar.xz
-      #     export PATH="$PWD/clang+llvm-12.0.0-x86_64-linux-gnu-ubuntu-20.04/bin:$PATH"
-
-      #     git clone https://github.com/broxus/nekoton-flutter.git
-      #     cd nekoton-flutter
-      #     git checkout $COMMIT_SHA
-
-      # - name: Build Nekoton
-      #   run: |
-      #     flutter pub get
-      #     flutter pub run nekoton_flutter:build
-
-      # continue with your build steps for iOS and Android
-
-  # build_ios:
-  #   name: Build iOS
-  #   runs-on: macos-latest
-  #   steps:
-      # - uses: actions/checkout@v3
-      # - uses: actions/setup-java@v3
-      #   with:
-      #     distribution: 'oracle'
-      #     java-version: "17"
-      # - uses: subosito/flutter-action@v2
-      #   with: 
-      #     channel: stable
-      # - run: flutter build ios --no-codesign
-
-  # build_appbundle:
-  #   name: Build Android
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - uses: actions/checkout@v3
-  #     - uses: actions/setup-java@v3
-  #       with:
-  #         distribution: 'oracle'
-  #         java-version: "17"
-  #     - uses: subosito/flutter-action@v2
-  #       with: 
-  #         channel: stable
-  #     - run: flutter build appbundle
+      - name: Create Release AAB
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ github.run_number }}
+          release_name: Release V${{ github.run_number }}
+          draft: false
+          prerelease: false
       
+      - name: Upload Release AAB
+        id: upload-release-asset 
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ${{steps.sign_app.outputs.signedReleaseFile}}
+          asset_name: app-release-v${{ github.run_number }}.zip
+          asset_content_type: application/zip
+
+      - name: Publish to Play Store internal test track
+        uses: r0adkll/upload-google-play@v1.0.15
+        with:
+          serviceAccountJsonPlainText: ${{ secrets.ANDROID_SERVICE_ACCOUNT_JSON }}
+          packageName: com.dexpaind.qamon
+          releaseFiles: build/app/outputs/bundle/release/app-release.aab
+          track: internal
+          inAppUpdatePriority: 3
+
+
