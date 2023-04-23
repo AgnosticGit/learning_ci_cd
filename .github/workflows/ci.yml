@@ -81,7 +81,17 @@ jobs:
           path: /Users/runner/work/learning_ci_cd/nekoton-flutter
           key: ${{ runner.os }}-nekoton-flutter-${{ hashFiles('**/Brewfile.lock.json') }}
           restore-keys: ${{ runner.os }}-nekoton-flutter-
-      
+
+      - name: Setup Java
+        uses: actions/setup-java@v3
+          with:
+            distribution: 'oracle'
+            java-version: "17"
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+          with: 
+            channel: stable
 
       - name: Checkout "nekoton-flutter"
         if: ${{ steps.nekoton_flutter_cache.outputs.cache-hit != 'true' }}
@@ -158,15 +168,15 @@ jobs:
   #   name: Build iOS
   #   runs-on: macos-latest
   #   steps:
-  #     - uses: actions/checkout@v3
-  #     - uses: actions/setup-java@v3
-  #       with:
-  #         distribution: 'oracle'
-  #         java-version: "17"
-  #     - uses: subosito/flutter-action@v2
-  #       with: 
-  #         channel: stable
-  #     - run: flutter build ios --no-codesign
+      # - uses: actions/checkout@v3
+      # - uses: actions/setup-java@v3
+      #   with:
+      #     distribution: 'oracle'
+      #     java-version: "17"
+      # - uses: subosito/flutter-action@v2
+      #   with: 
+      #     channel: stable
+      # - run: flutter build ios --no-codesign
 
   # build_appbundle:
   #   name: Build Android
