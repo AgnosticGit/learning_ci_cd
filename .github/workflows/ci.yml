@@ -69,7 +69,7 @@ jobs:
 
       - name: Save "Rust" Cache if not cached yet
         if: ${{ steps.rust_cache.outputs.cache-hit != 'true' }}
-        uses: actions/cache@v3
+        uses: actions/cache@v3 
         with:
           path: /Users/runner/.cargo
           key: ${{ runner.os }}-rust-${{ hashFiles('**/Brewfile.lock.json') }}
